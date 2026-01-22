@@ -62,11 +62,23 @@ class LoginActivity : AppCompatActivity() {
 //            finish()
             AutenticarUsuario(email, clave)
         }
-        buttonNewUser.setOnClickListener{
-
+        buttonNewUser.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
         mediaPlayer=MediaPlayer.create(this, R.raw.title_screen)
         mediaPlayer.start()
+    }
+    override fun onStart() {
+        super.onStart()
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra(EXTRA_LOGIN, currentUser.email)
+            startActivity(intent)
+            finish()
+        }
     }
     fun AutenticarUsuario(email:String, password:String){
         auth.signInWithEmailAndPassword(email, password)
